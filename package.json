@@ -26,7 +26,6 @@
     "eslint-plugin-n": "^16.3.1",
     "eslint-plugin-promise": "^6.1.1",
     "gulp": "^4.0.2",
-    "gulp-bump": "^3.2.0",
     "gulp-connect": "^5.7.0",
     "gulp-conventional-changelog": "^4.0.0",
     "gulp-gh-pages-will": "^0.5.5",
@@ -72,7 +71,6 @@
     "lint": "eslint src/**",
     "release": "gulp release_task",
     "test": "gulp test_task",
-    "version": "gulp version_task",
     "watch": "gulp watch_task",
     "webserver": "npm run build-demo && npm run jsdoc && gulp webserver_task",
     "update-libraries": "npx npm-check-updates -u"
