@@ -10,7 +10,6 @@ import source from "vinyl-source-stream";
 import gzip from "gulp-gzip";
 import mocha from "gulp-mocha";
 import ghPages from 'gulp-gh-pages-will';
-import bump from 'gulp-bump';
 import connect from 'gulp-connect';
 import minimist from 'minimist';
 import IPADic from 'mecab-ipadic-seed';
@@ -179,22 +178,6 @@ export const webserver_task = () => {
 export const deploy_task = () => {
   return src('publish/**/*')
     .pipe(ghPages());
-};
-
-export const version_task = () => {
-  let type = 'patch';
-  if (argv['minor']) {
-    type = 'minor';
-  }
-  if (argv['major']) {
-    type = 'major';
-  }
-  if (argv['prerelease']) {
-    type = 'prerelease';
-  }
-  return src([ './bower.json', './package.json' ])
-    .pipe(bump({ type: type }))
-    .pipe(dest('./'));
 };
 
 const release_commit_task = () => {
