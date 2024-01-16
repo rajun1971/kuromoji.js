@@ -1,22 +1,22 @@
 // https://cly7796.net/blog/other/migrate-gulpfile-js-to-es-modules/
 
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
-import pkg_gulp from 'gulp';
+import pkg_gulp from "gulp";
 const { dest, watch, src, series } = pkg_gulp;
-import {deleteAsync} from 'del';
-import merge from 'merge-stream';
+import {deleteAsync} from "del";
+import merge from "merge-stream";
 import browserify from "browserify";
 import source from "vinyl-source-stream";
 import gzip from "gulp-gzip";
 import mocha from "gulp-mocha";
-import ghPages from 'gulp-gh-pages-will';
-import connect from 'gulp-connect';
-import minimist from 'minimist';
-import IPADic from 'mecab-ipadic-seed';
-import kuromoji from './src/kuromoji.js';
+import ghPages from "gulp-gh-pages-will";
+import connect from "gulp-connect";
+import minimist from "minimist";
+import IPADic from "mecab-ipadic-seed";
+import kuromoji from "./src/kuromoji.js";
 
 const argv = minimist(process.argv.slice(2));
-import pkg_git from 'gulp-git';
+import pkg_git from "gulp-git";
 const { add, commit, tag } = pkg_git;
 
 export const clean_task = (done) => {
@@ -70,34 +70,34 @@ export const create_dat_files_task = async () => {
   const tokenInfoPromise = dic.readTokenInfo((line) => {
     builder.addTokenInfoDictionary(line);
   }).then(() => {
-    console.log('Finished to read token info dictionaries');
+    console.log("Finished to read token info dictionaries");
   });
 
   // Build connection costs matrix
   const matrixDefPromise = dic.readMatrixDef((line) => {
     builder.putCostMatrixLine(line);
   }).then(() => {
-    console.log('Finished to read matrix.def');
+    console.log("Finished to read matrix.def");
   });
 
   // Build unknown dictionary
   const unkDefPromise = dic.readUnkDef((line) => {
     builder.putUnkDefLine(line);
   }).then(() => {
-    console.log('Finished to read unk.def');
+    console.log("Finished to read unk.def");
   });
 
   // Build character definition dictionary
   const charDefPromise = dic.readCharDef((line) => {
     builder.putCharDefLine(line);
   }).then(() => {
-    console.log('Finished to read char.def');
+    console.log("Finished to read char.def");
   });
 
   // Build kuromoji.js binary dictionary
   await Promise.all([tokenInfoPromise, matrixDefPromise, unkDefPromise, charDefPromise]);
-  console.log('Finished to read all seed dictionary files');
-  console.log('Building binary dictionary ...');
+  console.log("Finished to read all seed dictionary files");
+  console.log("Building binary dictionary ...");
   const dic_1 = builder.build();
   const base_buffer = toBuffer(dic_1.trie.bc.getBaseBuffer());
   const check_buffer = toBuffer(dic_1.trie.bc.getCheckBuffer());
@@ -158,17 +158,17 @@ const clean_demo_task = () => {
 
 export const copy_demo_task = series(clean_demo_task, build_task, function copy_demo() {
   return merge(
-    src('demo/**/*')
-      .pipe(dest('publish/demo/')),
-    src('build/**/*')
-      .pipe(dest('publish/demo/kuromoji/build/')),
-    src('dict/**/*')
-      .pipe(dest('publish/demo/kuromoji/dict/')));
+    src("demo/**/*")
+      .pipe(dest("publish/demo/")),
+    src("build/**/*")
+      .pipe(dest("publish/demo/kuromoji/build/")),
+    src("dict/**/*")
+      .pipe(dest("publish/demo/kuromoji/dict/")));
 });
 
 export const webserver_task = () => {
   connect.server({
-    root: 'publish/',
+    root: "publish/",
     port: 8000,
     livereload: true,
     directoryListing: true
@@ -176,19 +176,19 @@ export const webserver_task = () => {
 };
 
 export const deploy_task = () => {
-  return src('publish/**/*')
+  return src("publish/**/*")
     .pipe(ghPages());
 };
 
 const release_commit_task = () => {
-  const version = JSON.parse(readFileSync('./package.json', 'utf8')).version;
-  return src('.')
+  const version = JSON.parse(readFileSync("./package.json", "utf8")).version;
+  return src(".")
     .pipe(add())
     .pipe(commit(`chore: release ${version}`));
 };
 
 const release_tag_task = (callback) => {
-  const version = JSON.parse(readFileSync('./package.json', 'utf8')).version;
+  const version = JSON.parse(readFileSync("./package.json", "utf8")).version;
   tag(version, `${version} release`, function (error) {
     if (error) {
       return callback(error);
