@@ -42,7 +42,9 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "resolutions": {
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "braces": "2.3.2",
+    "glob-parent": "6.0.2"
   },
   "homepage": "https://github.com/rajun1971/kuromoji.js",
   "keywords": [
