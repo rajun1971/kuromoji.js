@@ -11,11 +11,9 @@ import gzip from "gulp-gzip";
 import mocha from "gulp-mocha";
 import ghPages from "gulp-gh-pages-will";
 import connect from "gulp-connect";
-import minimist from "minimist";
 import IPADic from "mecab-ipadic-seed";
 import kuromoji from "./src/kuromoji.js";
 
-const argv = minimist(process.argv.slice(2));
 import pkg_git from "gulp-git";
 const { add, commit, tag } = pkg_git;
 
