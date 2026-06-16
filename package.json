@@ -32,7 +32,7 @@
     "gulp-git": "^2.10.1",
     "gulp-gzip": "^1.4.2",
     "gulp-mocha": "^10.0.0",
-    "jsdoc": "^4.0.2",
+    "jsdoc": "^4.0.5",
     "mecab-ipadic-seed": "0.0.2",
     "merge-stream": "^2.0.0",
     "minimist": "^1.2.8",
